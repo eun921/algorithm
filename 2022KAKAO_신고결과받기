@@ -1,0 +1,38 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+using namespace std;
+
+map<string,int> userCnt; //유저별 신고당한 횟수
+map<string,set<string>> userLog; //유저가 신고한 정보
+
+vector<int> solution(vector<string> id_list, vector<string> report, int k) {
+    vector<int> answer;
+    
+    //문자열 파싱
+    for(string s:report){
+        int blank=s.find(" ");
+        string from=s.substr(0,blank); //신고자
+        string to=s.substr(blank); //신고 당한 사람
+        
+        //신고 정보가 존재하지 않으면 맵에 추가, 신고횟수 추가
+        if(userLog[from].find(to)==userLog[from].end()){
+            userLog[from].insert(to);
+            userCnt[to]++;
+        }
+    }
+    
+    //각 id가 신고한 사람들 중 k번 이상 신고당한 사람들 수만큼 메일 발송
+    for(string id:id_list){
+        int mail_cnt=0;
+        for(string str:userLog[id]){
+            if(userCnt[str]>=k){
+                mail_cnt++;
+            }
+        }
+        answer.push_back(mail_cnt);
+    }
+    
+    return answer;
+}
