@@ -1,0 +1,25 @@
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+//점수 배열 선언
+int mean[8]={0,3,2,1,0,1,2,3};
+
+string solution(vector<string> survey, vector<int> choices) {
+    string answer = "";
+    map <char,int> result;
+    
+    for(int i=0;i<survey.size();i++){
+        result[survey[i][choices[i]/4]]+=mean[choices[i]];
+        //모르겠음(4)를 기준으로 0이면 앞, 1이면 뒤를 봄
+    }
+    
+    answer+=result['R']>=result['T']?"R":"T";
+    answer+=result['C']>=result['F']?"C":"F";
+    answer+=result['J']>=result['M']?"J":"M";
+    answer+=result['A']>=result['N']?"A":"N";
+    
+    
+    return answer;
+}
